@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BallController : MonoBehaviour
@@ -8,12 +6,24 @@ public class BallController : MonoBehaviour
     private Rigidbody rb;
     private bool isStarted = false;
     private Transform paddleTransform;
+    private GameManager gameManager;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.velocity = Vector3.zero; // Assurez-vous que la balle est initialement immobile
         paddleTransform = GameObject.Find("Paddle").transform; // Assurez-vous que le paddle est nommé "Paddle"
+        gameManager = FindObjectOfType<GameManager>(); // Trouver le GameManager dans la scène
+
+        // Vérifiez si gameManager est trouvé
+        if (gameManager == null)
+        {
+            Debug.LogError("GameManager not found in the scene!");
+        }
+        else
+        {
+            Debug.Log("GameManager successfully found.");
+        }
     }
 
     void Update()
@@ -45,7 +55,7 @@ public class BallController : MonoBehaviour
         if (collision.gameObject.CompareTag("Brick"))
         {
             Destroy(collision.gameObject);
-            // Ajoutez ici la gestion du score
+            gameManager.AddScore(10); // Ajouter 10 points pour chaque brique détruite
         }
 
         // Inverser la direction de la balle après une collision avec un angle aléatoire contrôlé
@@ -53,7 +63,7 @@ public class BallController : MonoBehaviour
         Vector3 newDirection = Vector3.Reflect(rb.velocity, normal);
 
         // Ajouter un angle aléatoire contrôlé
-        float angleVariation = Random.Range(-2f, 2f); // Ajustez l'amplitude de la variation selon vos besoins
+        float angleVariation = Random.Range(-10f, 10f); // Ajustez l'amplitude de la variation selon vos besoins
         newDirection = Quaternion.Euler(0, angleVariation, 0) * newDirection;
 
         // Assurez-vous que la balle reste sur le plan XZ en annulant toute composante Y
@@ -62,8 +72,3 @@ public class BallController : MonoBehaviour
         rb.velocity = newDirection.normalized * initialSpeed;
     }
 }
-
-
-
-
-
