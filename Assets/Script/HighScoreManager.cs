@@ -39,7 +39,7 @@ public class HighScoresManager : MonoBehaviour
             }
         }
 
-        scores = scores.OrderByDescending(s => s.Score).ToList();
+        scores = scores.OrderByDescending(s => s.Score).Take(10).ToList(); // Ne prendre que les 10 meilleurs scores
         scoresText.text = "Meilleurs Scores :\n";
         foreach (ScoreEntry entry in scores)
         {

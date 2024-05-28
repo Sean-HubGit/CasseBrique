@@ -6,13 +6,14 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public Text scoreText; // Assignez le texte du score dans l'inspecteur
+    public Text livesText; // Assignez le texte des vies dans l'inspecteur
     public Text endGameText; // Ajoutez un nouveau texte pour afficher la fin du jeu
 
-    public Button rejouer; // Ajoutez un nouveau texte pour afficher la fin du jeu
-
-    public Button quitter; // Ajoutez un nouveau texte pour afficher la fin du jeu
+    public Button rejouer; // Bouton pour rejouer
+    public Button quitter; // Bouton pour quitter
     private int score = 0;
     private int totalBricks;
+    private int lives = 3; // Nombre de vies
 
     private BallController ballController; // Référence au BallController
 
@@ -25,14 +26,19 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Score Text is not assigned!");
         }
+        if (livesText == null)
+        {
+            Debug.LogError("Lives Text is not assigned!");
+        }
         if (endGameText == null)
         {
             Debug.LogError("End Game Text is not assigned!");
         }
         UpdateScoreText();
+        UpdateLivesText();
         endGameText.gameObject.SetActive(false); // Masquer le texte de fin de partie au début
-        rejouer.gameObject.SetActive(false); // Masquer le texte de fin de partie au début
-        quitter.gameObject.SetActive(false); // Masquer le texte de fin de partie au début
+        rejouer.gameObject.SetActive(false); // Masquer le bouton rejouer au début
+        quitter.gameObject.SetActive(false); // Masquer le bouton quitter au début
     }
 
     public void AddScore(int value)
@@ -47,9 +53,13 @@ public class GameManager : MonoBehaviour
         scoreText.text = "Score: " + score;
     }
 
+    void UpdateLivesText()
+    {
+        livesText.text = "Lives: " + lives;
+    }
+
     void CheckEndGame()
     {
-        Debug.Log(GameObject.FindGameObjectsWithTag("Brick").Length);
         if (GameObject.FindGameObjectsWithTag("Brick").Length == 2)
         {
             EndGame();
@@ -71,9 +81,11 @@ public class GameManager : MonoBehaviour
         // Réinitialiser le temps
         Time.timeScale = 1;
 
-        // Réinitialiser le score
+        // Réinitialiser le score et les vies
         score = 0;
+        lives = 3;
         UpdateScoreText();
+        UpdateLivesText();
 
         // Réinitialiser la balle
         if (ballController != null)
@@ -109,5 +121,23 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("Score saved to CSV: " + filePath);
+    }
+
+    public void LoseLife()
+    {
+        lives--;
+        UpdateLivesText();
+        if (lives <= 0)
+        {
+            EndGame();
+        }
+        else
+        {
+            // Réinitialiser la balle
+            if (ballController != null)
+            {
+                ballController.ResetBall();
+            }
+        }
     }
 }
