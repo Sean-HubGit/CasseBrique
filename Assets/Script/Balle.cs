@@ -31,7 +31,7 @@ public class BallController : MonoBehaviour
         if (!isStarted)
         {
             // Fixer la balle au paddle
-            transform.position = new Vector3(paddleTransform.position.x, paddleTransform.position.y + 0.5f, paddleTransform.position.z); // Ajuster la position selon vos besoins
+            transform.position = new Vector3(paddleTransform.position.x, paddleTransform.position.y + 0.5f, paddleTransform.position.z + 5.5f); // Ajuster la position selon vos besoins
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 // Lancer la balle tout droit sur le plan Z
@@ -70,5 +70,12 @@ public class BallController : MonoBehaviour
         newDirection.y = 0;
 
         rb.velocity = newDirection.normalized * initialSpeed;
+    }
+
+    public void ResetBall()
+    {
+        isStarted = false;
+        rb.velocity = Vector3.zero;
+        transform.position = new Vector3(paddleTransform.position.x, paddleTransform.position.y + 0.5f, paddleTransform.position.z + 5.5f);
     }
 }
