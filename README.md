@@ -14,7 +14,7 @@ Ce projet est un jeu de type Breakout réalisé avec Unity. Le but du jeu est de
 
 ## Aperçu
 
-![Aperçu du Jeu](./Image.heic)
+![Aperçu du Jeu](./Image.png)
 
 ## Installation
 
