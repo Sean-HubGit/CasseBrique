@@ -20,7 +20,7 @@ Ce projet est un jeu de type Breakout réalisé avec Unity. Le but du jeu est de
 
 1. **Cloner le dépôt :**
     ```sh
-    git clone https://github.com/yourusername/breakout-game.git
+    git clone https://github.com/Sean-HubGit/CasseBrique.git
     ```
 2. **Ouvrir le projet dans Unity :**
     - Ouvrez Unity Hub.
@@ -71,10 +71,7 @@ Script de gestion du jeu. Gère le score, les vies, le timer, et la génération
 
 ## Crédits
 
-- **Développement** : Votre nom
-- **Graphismes** : Source des assets graphiques, si applicable
-- **Sons** : Source des effets sonores, si applicable
-
+- **Développement** : Jean Sauron
 ---
 
 Ce projet a été réalisé dans le cadre d'un apprentissage de Unity. Toute contribution ou suggestion est la bienvenue !
