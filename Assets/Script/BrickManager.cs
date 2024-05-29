@@ -11,9 +11,9 @@ public class BrickManager : MonoBehaviour
     public int columns = 10; // Nombre de colonnes de briques
     public int totalBricks = 15; // Nombre total de briques à placer
     public float spacing = 10f; // Espacement entre les briques
-    public float startX = 438f; // Position de départ en X
-    public float startY = 284f; // Position de départ en Y
-    public float startZ = -175f; // Position de départ en Z
+    public float startX = 300f; // Position de départ en X
+    public float startY = 244f; // Position de départ en Y
+    public float startZ = -230f; // Position de départ en Z
 
     void Start()
     {

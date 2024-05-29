@@ -8,18 +8,28 @@ public class GameManager : MonoBehaviour
     public Text scoreText; // Assignez le texte du score dans l'inspecteur
     public Text livesText; // Assignez le texte des vies dans l'inspecteur
     public Text endGameText; // Ajoutez un nouveau texte pour afficher la fin du jeu
+    public Text timerText; // Assignez le texte du timer dans l'inspecteur
 
     public Button rejouer; // Bouton pour rejouer
     public Button quitter; // Bouton pour quitter
+    public GameObject brickPrefabLevel1; // Assignez le préfabriqué de la brique de niveau 1
+    public GameObject brickPrefabLevel2; // Assignez le préfabriqué de la brique de niveau 2
+    public GameObject brickPrefabLevel3; // Assignez le préfabriqué de la brique de niveau 3
+
+    public float startX = 300f; // Position de départ en X
+    public float startY = 244f; // Position de départ en Y
+    public float startZ = -230f; // Position de départ en Z
+    public float spacing = 30f; // Espacement entre les briques
+    public float brickRadius = 1f; // Rayon utilisé pour vérifier si l'emplacement est libre
+
     private int score = 0;
-    private int totalBricks;
     private int lives = 3; // Nombre de vies
+    private float timeRemaining = 300f; // Temps restant en secondes
 
     private BallController ballController; // Référence au BallController
 
     void Start()
     {
-        totalBricks = GameObject.FindGameObjectsWithTag("Brick").Length; // Compter le nombre initial de briques
         ballController = FindObjectOfType<BallController>(); // Trouver le BallController dans la scène
 
         if (scoreText == null)
@@ -34,18 +44,50 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("End Game Text is not assigned!");
         }
+        if (timerText == null)
+        {
+            Debug.LogError("Timer Text is not assigned!");
+        }
+        if (brickPrefabLevel1 == null || brickPrefabLevel2 == null || brickPrefabLevel3 == null)
+        {
+            Debug.LogError("Brick prefabs are not assigned!");
+        }
+
         UpdateScoreText();
         UpdateLivesText();
+        UpdateTimerText();
+
         endGameText.gameObject.SetActive(false); // Masquer le texte de fin de partie au début
         rejouer.gameObject.SetActive(false); // Masquer le bouton rejouer au début
         quitter.gameObject.SetActive(false); // Masquer le bouton quitter au début
+
+        // Générer quelques briques initiales
+        for (int i = 0; i < 5; i++)
+        {
+            GenerateRandomBrick();
+        }
+    }
+
+    void Update()
+    {
+        if (timeRemaining > 0)
+        {
+            timeRemaining -= Time.deltaTime;
+            UpdateTimerText();
+
+            if (timeRemaining <= 0)
+            {
+                timeRemaining = 0;
+                EndGame();
+            }
+        }
     }
 
     public void AddScore(int value)
     {
         score += value;
         UpdateScoreText();
-        CheckEndGame(); // Vérifier si le jeu est terminé après avoir ajouté le score
+        GenerateRandomBrick(); // Générer une nouvelle brique chaque fois qu'une brique est cassée
     }
 
     void UpdateScoreText()
@@ -58,12 +100,10 @@ public class GameManager : MonoBehaviour
         livesText.text = "Lives: " + lives;
     }
 
-    void CheckEndGame()
+    void UpdateTimerText()
     {
-        if (GameObject.FindGameObjectsWithTag("Brick").Length == 2)
-        {
-            EndGame();
-        }
+        int seconds = Mathf.FloorToInt(timeRemaining);
+        timerText.text = "Time: " + seconds.ToString();
     }
 
     void EndGame()
@@ -84,8 +124,10 @@ public class GameManager : MonoBehaviour
         // Réinitialiser le score et les vies
         score = 0;
         lives = 3;
+        timeRemaining = 300f; // Réinitialiser le timer
         UpdateScoreText();
         UpdateLivesText();
+        UpdateTimerText();
 
         // Réinitialiser la balle
         if (ballController != null)
@@ -138,6 +180,48 @@ public class GameManager : MonoBehaviour
             {
                 ballController.ResetBall();
             }
+        }
+    }
+
+    void GenerateRandomBrick()
+    {
+        int randomLevel = Random.Range(1, 4); // Générer un nombre aléatoire entre 1 et 3 inclus
+        GameObject brickPrefab;
+
+        switch (randomLevel)
+        {
+            case 1:
+                brickPrefab = brickPrefabLevel1;
+                break;
+            case 2:
+                brickPrefab = brickPrefabLevel2;
+                break;
+            case 3:
+                brickPrefab = brickPrefabLevel3;
+                break;
+            default:
+                brickPrefab = brickPrefabLevel1;
+                break;
+        }
+
+        Vector3 position;
+        int attempts = 0;
+        bool positionFound = false;
+
+        do
+        {
+            position = new Vector3(startX + Random.Range(-4, 12) * spacing, startY, startZ + Random.Range(-1, 4) * spacing);
+            positionFound = !Physics.CheckSphere(position, brickRadius);
+            attempts++;
+        } while (!positionFound && attempts < 1000); // Limiter le nombre d'essais pour éviter une boucle infinie
+
+        if (positionFound)
+        {
+            Instantiate(brickPrefab, position, Quaternion.identity);
+        }
+        else
+        {
+            Debug.LogWarning("Could not find a valid position to spawn a new brick.");
         }
     }
 }

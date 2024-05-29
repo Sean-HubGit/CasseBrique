@@ -58,7 +58,6 @@ public class BallController : MonoBehaviour
             if (brick != null)
             {
                 brick.TakeHit();
-                gameManager.AddScore(10); // Ajouter 10 points pour chaque coup sur une brique
             }
         }
 
@@ -72,7 +71,7 @@ public class BallController : MonoBehaviour
         Vector3 newDirection = Vector3.Reflect(rb.velocity, normal);
 
         // Ajouter un angle aléatoire contrôlé
-        float angleVariation = Random.Range(-10f, 10f); // Ajustez l'amplitude de la variation selon vos besoins
+        float angleVariation = Random.Range(-2f, 2f); // Ajustez l'amplitude de la variation selon vos besoins
         newDirection = Quaternion.Euler(0, angleVariation, 0) * newDirection;
 
         // Assurez-vous que la balle reste sur le plan XZ en annulant toute composante Y
