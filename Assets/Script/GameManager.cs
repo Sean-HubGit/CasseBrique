@@ -65,9 +65,9 @@ public class GameManager : MonoBehaviour
         UpdateTimerText();
 
         // Masquer les éléments de fin de jeu au début
-        endGameText.gameObject.SetActive(false);
-        rejouer.gameObject.SetActive(false);
-        quitter.gameObject.SetActive(false);
+        endGameText.gameObject.SetActive(false); // Set Active pour cacher le texte de fin de jeu
+        rejouer.gameObject.SetActive(false); // Pareil pour le bouton rejouer
+        quitter.gameObject.SetActive(false); // Pareil pour le bouton quitter
 
         // Générer quelques briques initiales
         for (int i = 0; i < 5; i++)
@@ -122,16 +122,16 @@ public class GameManager : MonoBehaviour
     // Mettre à jour le texte du timer
     void UpdateTimerText()
     {
-        int seconds = Mathf.FloorToInt(timeRemaining);
-        timerText.text = "Time: " + seconds.ToString();
+        int seconds = Mathf.FloorToInt(timeRemaining); // Convertir le temps restant en secondes
+        timerText.text = "Time: " + seconds.ToString(); // Afficher le temps restant
     }
 
     // Terminer le jeu
     void EndGame()
     {
-        endGameText.gameObject.SetActive(true);
-        rejouer.gameObject.SetActive(true);
-        quitter.gameObject.SetActive(true);
+        endGameText.gameObject.SetActive(true); // Set Active pour afficher le texte de fin de jeu
+        rejouer.gameObject.SetActive(true); // Pareil pour le bouton rejouer
+        quitter.gameObject.SetActive(true); // Pareil pour le bouton quitter
         endGameText.text = "Game Over! Final Score: " + score;
         SaveScoreToCSV();
         Time.timeScale = 0; // Arrêter le temps
@@ -253,7 +253,7 @@ public class GameManager : MonoBehaviour
         // Essayer de trouver une position libre pour la nouvelle brique
         do
         {
-            position = new Vector3(startX + Random.Range(-4, 12) * spacing, startY, startZ + Random.Range(-1, 4) * spacing);
+            position = new Vector3(startX + Random.Range(-4, 12) * spacing, startY, startZ + Random.Range(-1, 4) * spacing); // Position aléatoire mais dans le cadre car le cadre n'est pas bien cadré au départ. Donc entre -4 et 12 pour X et -1 et 4 pour Z
             positionFound = !Physics.CheckSphere(position, brickRadius);
             attempts++;
         } while (!positionFound && attempts < 100); // Limiter le nombre d'essais pour éviter une boucle infinie
