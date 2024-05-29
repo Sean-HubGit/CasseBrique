@@ -31,7 +31,7 @@ Ce projet est un jeu de type Breakout réalisé avec Unity. Le but du jeu est de
 
 ## Commandes
 
-- **Déplacer le paddle :** Utilisez les touches `A` (gauche) et `D` (droite).
+- **Déplacer le paddle :** Utilisez les touches `Q` (gauche) et `D` (droite).
 - **Lancer la balle :** Appuyez sur la touche `Space`.
 
 ## Fonctionnalités
@@ -45,7 +45,7 @@ Ce projet est un jeu de type Breakout réalisé avec Unity. Le but du jeu est de
 
 ### PaddleController.cs
 
-Script pour contrôler le paddle, permettant de le déplacer horizontalement avec les touches `A` et `D`, tout en limitant son mouvement entre des positions `minX` et `maxX`.
+Script pour contrôler le paddle, permettant de le déplacer horizontalement avec les touches `Q` et `D`, tout en limitant son mouvement entre des positions `minX` et `maxX`.
 
 ### BallController.cs
 
