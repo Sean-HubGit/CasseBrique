@@ -54,13 +54,16 @@ public class BallController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Brick"))
         {
-            Destroy(collision.gameObject);
-            gameManager.AddScore(10); // Ajouter 10 points pour chaque brique détruite
+            Brick brick = collision.gameObject.GetComponent<Brick>();
+            if (brick != null)
+            {
+                brick.TakeHit();
+                gameManager.AddScore(10); // Ajouter 10 points pour chaque coup sur une brique
+            }
         }
 
         if (collision.gameObject.CompareTag("BottomBar"))
         {
-            Debug.Log("Ball hit the bottom bar!");
             gameManager.LoseLife(); // Perdre une vie lorsque la balle touche la barre du bas
         }
 
@@ -69,7 +72,7 @@ public class BallController : MonoBehaviour
         Vector3 newDirection = Vector3.Reflect(rb.velocity, normal);
 
         // Ajouter un angle aléatoire contrôlé
-        float angleVariation = Random.Range(-5f, 5f); // Ajustez l'amplitude de la variation selon vos besoins
+        float angleVariation = Random.Range(-10f, 10f); // Ajustez l'amplitude de la variation selon vos besoins
         newDirection = Quaternion.Euler(0, angleVariation, 0) * newDirection;
 
         // Assurez-vous que la balle reste sur le plan XZ en annulant toute composante Y
