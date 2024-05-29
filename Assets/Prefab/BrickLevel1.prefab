@@ -151,3 +151,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: 1
+  level1Color: {r: 1, g: 0.8116398, b: 0, a: 1}
+  level2Color: {r: 0.015686274, g: 0.120131426, b: 1, a: 1}
+  level3Color: {r: 0, g: 1, b: 0, a: 1}

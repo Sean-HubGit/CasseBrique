@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public GameObject brickPrefabLevel1; // Assignez le préfabriqué de la brique de niveau 1
     public GameObject brickPrefabLevel2; // Assignez le préfabriqué de la brique de niveau 2
     public GameObject brickPrefabLevel3; // Assignez le préfabriqué de la brique de niveau 3
+    public GameObject brickPrefabMalus; // Assignez le préfabriqué de la brique malus
+    public GameObject brickPrefabBonus; // Assignez le préfabriqué de la brique bonus
 
     public float startX = 300f; // Position de départ en X
     public float startY = 244f; // Position de départ en Y
@@ -87,7 +89,11 @@ public class GameManager : MonoBehaviour
     {
         score += value;
         UpdateScoreText();
-        GenerateRandomBrick(); // Générer une nouvelle brique chaque fois qu'une brique est cassée
+    }
+
+    public void BrickDestroyed()
+    {
+        GenerateRandomBrick(); // Générer une nouvelle brique lorsqu'une brique est détruite
     }
 
     void UpdateScoreText()
@@ -185,23 +191,38 @@ public class GameManager : MonoBehaviour
 
     void GenerateRandomBrick()
     {
-        int randomLevel = Random.Range(1, 4); // Générer un nombre aléatoire entre 1 et 3 inclus
+    int randomValue = Random.Range(1, 101); // Générer un nombre aléatoire entre 1 et 100
         GameObject brickPrefab;
 
-        switch (randomLevel)
+        if (randomValue <= 70)
         {
-            case 1:
-                brickPrefab = brickPrefabLevel1;
-                break;
-            case 2:
-                brickPrefab = brickPrefabLevel2;
-                break;
-            case 3:
-                brickPrefab = brickPrefabLevel3;
-                break;
-            default:
-                brickPrefab = brickPrefabLevel1;
-                break;
+            // 70% de chances d'obtenir une brique normale
+            int randomLevel = Random.Range(1, 4);
+            switch (randomLevel)
+            {
+                case 1:
+                    brickPrefab = brickPrefabLevel1;
+                    break;
+                case 2:
+                    brickPrefab = brickPrefabLevel2;
+                    break;
+                case 3:
+                    brickPrefab = brickPrefabLevel3;
+                    break;
+                default:
+                    brickPrefab = brickPrefabLevel1;
+                    break;
+            }
+        }
+        else if (randomValue <= 85)
+        {
+            // 15% de chances d'obtenir une brique malus
+            brickPrefab = brickPrefabMalus;
+        }
+        else
+        {
+            // 15% de chances d'obtenir une brique bonus
+            brickPrefab = brickPrefabBonus;
         }
 
         Vector3 position;
@@ -213,7 +234,7 @@ public class GameManager : MonoBehaviour
             position = new Vector3(startX + Random.Range(-4, 12) * spacing, startY, startZ + Random.Range(-1, 4) * spacing);
             positionFound = !Physics.CheckSphere(position, brickRadius);
             attempts++;
-        } while (!positionFound && attempts < 1000); // Limiter le nombre d'essais pour éviter une boucle infinie
+        } while (!positionFound && attempts < 100); // Limiter le nombre d'essais pour éviter une boucle infinie
 
         if (positionFound)
         {

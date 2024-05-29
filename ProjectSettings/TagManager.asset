@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Brick
   - BottomBar
+  - Malus
+  - Bonus
   layers:
   - Default
   - TransparentFX
