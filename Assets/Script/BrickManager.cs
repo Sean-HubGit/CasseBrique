@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-
 public class BrickManager : MonoBehaviour
 {
     public GameObject brickPrefabLevel1; // Assignez le préfabriqué de la brique de niveau 1
@@ -15,11 +14,13 @@ public class BrickManager : MonoBehaviour
     public float startY = 244f; // Position de départ en Y
     public float startZ = -230f; // Position de départ en Z
 
+    // Méthode appelée au début de la scène
     void Start()
     {
-        GenerateBricks();
+        GenerateBricks(); // Générer les briques à la position de départ
     }
 
+    // Méthode pour générer les briques
     void GenerateBricks()
     {
         List<Vector3> positions = new List<Vector3>();
@@ -30,25 +31,27 @@ public class BrickManager : MonoBehaviour
             for (int j = 0; j < columns; j++)
             {
                 Vector3 position = new Vector3(startX + j * spacing, startY, startZ + i * spacing);
-                positions.Add(position);
+                positions.Add(position); // Ajouter la position à la liste
             }
         }
 
-        // Mélanger les positions
+        // Mélanger les positions pour les rendre aléatoires
         Shuffle(positions);
 
         // Placer les briques sur les premières positions mélangées
         for (int i = 0; i < totalBricks; i++)
         {
-            InstantiateRandomBrick(positions[i]);
+            InstantiateRandomBrick(positions[i]); // Instancier une brique à une position donnée
         }
     }
 
+    // Méthode pour instancier une brique aléatoire à une position donnée
     void InstantiateRandomBrick(Vector3 position)
     {
         int randomLevel = Random.Range(1, 4); // Générer un nombre aléatoire entre 1 et 3 inclus
         GameObject brickPrefab;
 
+        // Sélectionner le préfabriqué de brique en fonction du niveau aléatoire
         switch (randomLevel)
         {
             case 1:
@@ -65,19 +68,21 @@ public class BrickManager : MonoBehaviour
                 break;
         }
 
+        // Instancier la brique à la position donnée
         Instantiate(brickPrefab, position, Quaternion.identity);
     }
 
+    // Méthode pour mélanger une liste (algorithme de Fisher-Yates)
     void Shuffle<T>(IList<T> list)
     {
         int n = list.Count;
         while (n > 1)
         {
             n--;
-            int k = Random.Range(0, n + 1);
+            int k = Random.Range(0, n + 1); // Sélectionner un indice aléatoire
             T value = list[k];
             list[k] = list[n];
-            list[n] = value;
+            list[n] = value; // Échanger les éléments
         }
     }
 }
